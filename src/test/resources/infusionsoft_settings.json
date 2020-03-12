@@ -1,0 +1,116 @@
+{
+  "token": {
+    "token": "29cedcc6d077257a622668afa53e9ad2c023940a2f4a84dab05c7fc629b67195",
+    "expires": 0,
+    "machineId": null
+  },
+  "accounts": [],
+  "tables": [],
+  "props": {
+    "EASYECOM.input.email": "abhishek.g@mamaearth.in",
+    "EASYECOM.input.password": "abcd1234"
+  },
+  "version": 2,
+  "config": [
+    {
+      "stepNumber": 1,
+      "selection": {
+        "EASYECOM.input.1.integrationName": [
+          "fee"
+        ],
+        "EASYECOM.input.1.frequency": [
+          "2"
+        ],
+        "EASYECOM.input.1.history": [
+          "1"
+        ],
+        "EASYECOM.input.1.date": [
+          ""
+        ]
+      }
+    },
+    {
+      "stepNumber": 2,
+      "selection": {
+        "EASYECOM.input.2.email": [
+          "abhishek.g@mamaearth.in"
+        ],
+        "EASYECOM.input.2.password": [
+          "abcd1234"
+        ]
+      }
+    },
+    {
+      "stepNumber": 3,
+      "selection": {
+        "EASYECOM.input.3.tables": [
+          "Getvendors",
+          "Getreturns",
+          "Getpurchaseorders",
+          "Getproductlist",
+          "Getmasterproduct",
+          "Getmarketplacelisting",
+          "Getinventory",
+          "Getgrndetails",
+          "Getcustomers",
+          "Getallorders"
+        ]
+      }
+    },
+    {
+      "stepNumber": 4,
+      "selection": {
+        "EASYECOM.input.4.Getvendors.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getreturns.fields": [
+          "status",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getpurchaseorders.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getproductlist.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getmasterproduct.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getmarketplacelisting.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getinventory.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getgrndetails.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getcustomers.fields": [
+          "code",
+          "message",
+          "data"
+        ],
+        "EASYECOM.input.4.Getallorders.fields": [
+          "code",
+          "message",
+          "data"
+        ]
+      }
+    }
+  ]
+}

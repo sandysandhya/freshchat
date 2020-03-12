@@ -1,0 +1,1826 @@
+{
+  "version": 2,
+  "preAuthSteps": [
+    {
+      "header": "<div class='step-header-main'>Setup Stampedio Integration</div><div class='step-header-sub'>Refer to our documention for setup instructions</div>",
+      "type": "STATIC",
+      "attributes": [
+        {
+          "label": "Fill in the below details to establish connection between Stampedio and Warehouse for data replication",
+          "type": "INFO"
+        },
+        {
+          "label": "Integration Name",
+          "name": "integrationName",
+          "type": "TEXT",
+          "required": true,
+          "maxLength": 50,
+          "value": "",
+          "possibleValues": [
+
+          ],
+          "autoCompleteUrl": "",
+          "help": "Enter the integration name. Daton will use this name to create tables in the warehouse. Once selected, this name cannot be changed.",
+          "description": ""
+        },
+        {
+          "label": "Frequency",
+          "name": "frequency",
+          "type": "INTEGER",
+          "required": true,
+          "maxLength": 50,
+          "value": "2",
+          "min": 1,
+          "max": 24,
+          "possibleValues": [
+
+          ],
+          "autoCompleteUrl": "",
+          "help": "Select the frequency in hours with which you'd like Daton to pull data from this source.",
+          "description": "Hours"
+        },
+        {
+          "label": "History",
+          "name": "history",
+          "type": "INTEGER",
+          "required": true,
+          "maxLength": 50,
+          "value": "1",
+          "min": 0,
+          "max": 10,
+          "possibleValues": [
+
+          ],
+          "autoCompleteUrl": "",
+          "help": "Select the number of years of historical data you'd like Daton to pull into your data warehouse.",
+          "description": "Years"
+        }
+      ]
+    },
+    {
+      "header": "<div class='step-header-main'>Setup Stampedio Integration</div><div class='step-header-sub'>API Details</div>",
+      "type": "STATIC",
+      "attributes": [
+        {
+          "label": "Enter Stampedio api public key here",
+          "name": "client_id",
+          "type": "TEXT",
+          "required": true,
+          "maxLength": 50,
+          "value": "",
+          "possibleValues": [
+
+          ],
+          "autoCompleteUrl": "",
+          "help": "Client id",
+          "description": ""
+        },
+        {
+          "label": "Enter Stampedio api private key here",
+          "name": "client_secret",
+          "type": "TEXT",
+          "required": true,
+          "maxLength": 50,
+          "value": "",
+          "possibleValues": [
+
+          ],
+          "autoCompleteUrl": "",
+          "help": "Client secret",
+          "description": ""
+        },
+        {
+          "label": "Enter Stampedio store hash here",
+          "name": "store_hash",
+          "type": "TEXT",
+          "required": true,
+          "maxLength": 50,
+          "value": "",
+          "possibleValues": [
+
+          ],
+          "autoCompleteUrl": "",
+          "help": "Store Hash",
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "postAuthSteps": [
+    {
+      "header": "<div class='step-header-main'>Setup Stampedio Integration</div><div class='step-header-sub'>Choose Accounts </div>",
+      "type": "DYNAMIC"
+    },
+    {
+      "header": "<div class='step-header-main'>Setup Stampedio Integration</div><div class='step-header-sub'>Configure tables & fields </div>",
+      "type": "DYNAMIC"
+    }
+  ],
+  "extraConfig": {
+    "tables": [
+      {
+        "name": "reviews",
+        "columns": [
+          {
+            "name": "id",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewState",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "rating",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "title",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "author",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "email",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "location",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "countryISO",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "imagesFileName",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "imagesFileNamePublished",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "videosFileName",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "videosFileNamePublished",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "body",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reply",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productId",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productHandle",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productTitle",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productUrl",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productImageUrl",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productImageCroppedUrl",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productImageThumbnailUrl",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "sentimentScore",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "sentimentMagnitude",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "source",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewSource",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "ipAddress",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "ipAddressSource",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "userReference",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isPublishedShopify",
+            "type": "BOOLEAN",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isConvertedImage",
+            "type": "BOOLEAN",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isPublicReply",
+            "type": "BOOLEAN",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isFeatured",
+            "type": "BOOLEAN",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isRead",
+            "type": "BOOLEAN",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isPublishedFeed",
+            "type": "BOOLEAN",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isRecommend",
+            "type": "BOOLEAN",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "queueReviewEmailID",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "customerId",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "shopProductId",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewSourceAppId",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewSourceAppEntityId",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "shop_ID",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "verifiedType",
+            "type": "NUMERIC",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateCreated",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateReplied",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateAdded",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewMediaList",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewOptionsList",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewVotesList",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewSocialSharesList",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "tagsList",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "sentimentAnalysisReviewList",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isPublished",
+            "type": "STRING",
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          }
+
+        ]
+      },
+      {
+        "name": "questions",
+        "columns": [
+          {
+            "name": "question",
+            "type": "RECORD",
+            "mode": "REPEATED",
+            "fields": [
+              {
+                "name": "id",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "guid",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "title",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "message",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "name",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "location",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productID",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productImageUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productName",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productSKU",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "isPublic",
+                "type": "BOOLEAN",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "state",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "isRead",
+                "type": "BOOLEAN",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "dateCreated",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "answersList",
+                "type": "RECORD",
+                "mode": "REPEATED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "NUMERIC",
+                    "fields": [],
+                    "primary": false,
+                    "lastRecord": false,
+                    "selected": true
+                  },
+                  {
+                    "name": "message",
+                    "type": "STRING",
+                    "fields": [],
+                    "primary": false,
+                    "lastRecord": false,
+                    "selected": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "STRING",
+                    "fields": [],
+                    "primary": false,
+                    "lastRecord": false,
+                    "selected": true
+                  },
+                  {
+                    "name": "isPublic",
+                    "type": "BOOLEAN",
+                    "fields": [],
+                    "primary": false,
+                    "lastRecord": false,
+                    "selected": true
+                  },
+                  {
+                    "name": "dateCreated",
+                    "type": "STRING",
+                    "fields": [],
+                    "primary": false,
+                    "lastRecord": false,
+                    "selected": true
+                  },
+                  {
+                    "name": "date",
+                    "type": "STRING",
+                    "fields": [],
+                    "primary": false,
+                    "lastRecord": false,
+                    "selected": true
+                  }
+                ],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "date",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "customerEmail",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "tagsList",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              }
+            ],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "questionEmailsList",
+            "type": "RECORD",
+            "mode": "REPEATED",
+            "fields": [
+              {
+                "name": "id",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "email",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "customerId",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "name",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "reviewId",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "queueReviewEmailId",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "openUserAgent",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "chosenType",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "isAnswered",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "dateSent",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "dateOpened",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "dateCreated",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              }
+            ],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "customer",
+            "type": "RECORD",
+            "mode": "REPEATED",
+            "fields": [
+              {
+                "name": "id",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "name",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "firstName",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "lastName",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "customerEmail",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "profileImageUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "socialFacebookUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "socialTwitterUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "socialLinkedInUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "socialInstagramUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "notes",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "country",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "geoLocation",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "ipAddress",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "sentimentScore",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "sentiment",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "isSubscribed",
+                "type": "BOOLEAN",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "dateCreated",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "dateUpdated",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "shopId",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "attributes",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              }
+            ],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "voteUp",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "voteDown",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "tags",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          }
+
+        ],
+        "storage": {
+          "basePath": "",
+          "blobPath": ""
+        },
+        "schema": "",
+        "selected": true,
+        "pivotColumn": null,
+        "modificationType": "NONE"
+      },
+      {
+        "name": "nps",
+        "columns": [
+          {
+            "name": "id",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "rating",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "body",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reply",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "state",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "surveySource",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "shopProductId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "ipAddress",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "customerId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "queueReviewEmailId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isRead",
+            "type": "BOOLEAN",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "isFeatured",
+            "type": "BOOLEAN",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "shop_ID",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "shopProduct",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "verifiedType",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateCreated",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateAdded",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateReplied",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "tagsList",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "customer",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "voteUp",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "voteDown",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "tags",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          }
+
+        ],
+        "storage": {
+          "basePath": "",
+          "blobPath": ""
+        },
+        "schema": "",
+        "selected": true,
+        "pivotColumn": null,
+        "modificationType": "NONE"
+      },
+      {
+        "name": "surveys",
+        "columns": [
+          {
+            "name": "id",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "email",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "firstName",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "lastName",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "fullName",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "location",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "locationCity",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "locationState",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "customerId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productName",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productUrl",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "productImageUrl",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderNumber",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderIdShopify",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderCurrencyISO",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderTotalPrice",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderSource",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderStatusUrl",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewFormURL",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "couponCode",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "subscribed",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "review",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "npsRating",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "reviewId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderDate",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "orderDateFulfilled",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateScheduled",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateOpened",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateSent",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateSentReminder",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateScheduledNPS",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateOpenedNPS",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateSentNPS",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateReviewedNPS",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateScheduledSet",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "itemsList",
+            "type": "RECORD",
+            "mode": "REPEATED",
+            "fields": [
+              {
+                "name": "id",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "queueReviewEmailId",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productId",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productTitle",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productDescription",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productImageUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productPrice",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productBrand",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productType",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productTags",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productBarcode",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productSKU",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              }
+            ],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "recommendationsList",
+            "type": "RECORD",
+            "mode": "REPEATED",
+            "fields": [
+              {
+                "name": "id",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "queueReviewEmailId",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productId",
+                "type": "NUMERIC",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productTitle",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productDescription",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productImageUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productUrl",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productPrice",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productBrand",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productType",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productTags",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productBarcode",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              },
+              {
+                "name": "productSKU",
+                "type": "STRING",
+                "fields": [],
+                "primary": false,
+                "lastRecord": false,
+                "selected": true
+              }
+            ],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          }
+
+        ],
+        "storage": {
+          "basePath": "",
+          "blobPath": ""
+        },
+        "schema": "",
+        "selected": true,
+        "pivotColumn": null,
+        "modificationType": "NONE"
+      },
+      {
+        "name": "unsubscribe",
+        "columns":[
+          {
+            "name": "id",
+            "type": "NUMERIC",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "email",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "fromQuestionId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "fromReviewEmailId",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          },
+          {
+            "name": "dateUnsubscribed",
+            "type": "STRING",
+            "fields": [],
+            "primary": false,
+            "lastRecord": false,
+            "selected": true
+          }
+
+        ],
+        "storage": {
+          "basePath": "",
+          "blobPath": ""
+        },
+        "schema": "",
+        "selected": true,
+        "pivotColumn": null,
+        "modificationType": "NONE"
+      }
+
+    ]
+  }
+}
