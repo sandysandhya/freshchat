@@ -70,14 +70,6 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             log.currentLastRecord = currentLastRunRecord
             val tableName = table.name.substringAfter("_")
             when (tableName) {
-//                "Getproductlist" -> {
-//                    var reportRecords = productlist(accessToken,columns, lastRunDate,currentLastRunRecord, tableName, emitter, log)
-//                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
-//                }
-                "listappointments" -> {
-                    var reportRecords = listappointments(accessToken,tableName)
-                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
-                }
 
             }
             emitter.onComplete()
@@ -129,35 +121,6 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
 
     }
 
-
-    private fun listappointments(accessToken:String,tableName: String):JsonNode {
-
-        val resp = freshchatAPI.listappointments("Authorization","since","until","limit").execute()
-        if (resp.isSuccessful) {
-            val r4 = resp.body() ?: throw RuntimeException("Freshchat code error")
-            val j4 = mapper.readTree(r4)
-            j4["error"]?.let {
-                throw RuntimeException(it.toString())
-            }
-            return  j4
-        }else{
-            when (resp.code()) {
-                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
-                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
-                429 -> {
-                    val responseHeader = resp.headers()
-                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
-                    val sleepOffset = Instant.now().epochSecond - timeToReset
-                    TimeUnit.SECONDS.sleep(sleepOffset)
-                }
-                else -> {
-                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchat from API")
-                }
-            }
-            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
-        }
-
-    }
 
 
 
@@ -332,15 +295,6 @@ interface FreshchatAPI {
         @Field("client_secret") clientSecret: String,
         @Field("refresh_token") refreshToken: String
     ): Call<String>
-    @GET("/appointments")
-    fun listappointments(
-        @Header("Authorization") Authorization: String,
-        @Query("since") since: String,
-        @Query("until") until: String,
-        @Query("limit") limit: String
-
-    ): Call<String>
-
 }
 
 

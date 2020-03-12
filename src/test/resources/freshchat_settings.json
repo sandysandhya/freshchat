@@ -5,7 +5,9 @@
     "machineId": null
   },
   "accounts": [],
-  "tables": [],
+  "tables": [
+
+  ],
   "props": {
     "EASYECOM.input.email": "abhishek.g@mamaearth.in",
     "EASYECOM.input.password": "abcd1234"
