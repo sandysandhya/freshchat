@@ -14,14 +14,14 @@ import javax.inject.Inject
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(Junit5Extension::class)
-open class InfusionsoftTest {
+open class FreshchatTest {
 
     @Inject
     private lateinit var initializer: Initializer
 
     @Test
     open fun test1() {
-        val input = Thread.currentThread().contextClassLoader.getResourceAsStream("infusionsoft_settings.json") ?: throw RuntimeException()
+        val input = Thread.currentThread().contextClassLoader.getResourceAsStream("freshchat_settings.json") ?: throw RuntimeException()
         val settings = GsonBuilder().registerTypeAdapter(Mode::class.java, ModeDeserializer())
             .registerTypeAdapter(ColumnType::class.java, ColumnTypeDeserializer()).registerTypeAdapter(JsonNode::class.java, JsonNodeSerializer())
             .create().fromJson(InputStreamReader(input), SourceSettings::class.java)
@@ -29,7 +29,7 @@ open class InfusionsoftTest {
         source.frequency = "2"
         source.history = ""
         source.name = "Test"
-        source.type = "INFUSIONSOFT"
+        source.type = "FRESHCHAT"
         source.settings = settings
         initializer.init(source)
     }

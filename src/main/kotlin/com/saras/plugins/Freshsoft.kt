@@ -34,7 +34,7 @@ import kotlin.reflect.full.functions
 import kotlin.reflect.jvm.javaField
 import kotlin.streams.toList
 
-class InfusionsoftourceProcess(override val source: Source) : SourceProcess {
+class FreshchatSourceProcess(override val source: Source) : SourceProcess {
     override fun refreshToken(): Pair<Boolean, SourceToken> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -94,7 +94,7 @@ class InfusionsoftourceProcess(override val source: Source) : SourceProcess {
 
     override fun start(): Boolean {
         timestamp.set(Instant.now().toEpochMilli())
-        logger.info("Infusionsoft source started for ${source.sourceId}")
+        logger.info("Freshchat source started for ${source.sourceId}")
         return true
     }
 
@@ -102,9 +102,9 @@ class InfusionsoftourceProcess(override val source: Source) : SourceProcess {
 
     private fun exchangeToken(accessToken:String,tableName: String):JsonNode {
 
-        val resp = infusionSoftAPI.exchangeToken("grant_type","client_id","client_secret","refresh_token").execute()
+        val resp = freshchatAPI.exchangeToken("grant_type","client_id","client_secret","refresh_token").execute()
         if (resp.isSuccessful) {
-            val r4 = resp.body() ?: throw RuntimeException("infusionsoft code error")
+            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
             val j4 = mapper.readTree(r4)
             j4["error"]?.let {
                 throw RuntimeException(it.toString())
@@ -121,7 +121,7 @@ class InfusionsoftourceProcess(override val source: Source) : SourceProcess {
                     TimeUnit.SECONDS.sleep(sleepOffset)
                 }
                 else -> {
-                    InfusionsoftourceProcess.logger.error("Problem occurred while fetching Hubspot from API")
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Hubspot from API")
                 }
             }
             throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
@@ -132,9 +132,9 @@ class InfusionsoftourceProcess(override val source: Source) : SourceProcess {
 
     private fun listappointments(accessToken:String,tableName: String):JsonNode {
 
-        val resp = infusionSoftAPI.listappointments("Authorization","since","until","limit").execute()
+        val resp = freshchatAPI.listappointments("Authorization","since","until","limit").execute()
         if (resp.isSuccessful) {
-            val r4 = resp.body() ?: throw RuntimeException("infusionsoft code error")
+            val r4 = resp.body() ?: throw RuntimeException("Freshchat code error")
             val j4 = mapper.readTree(r4)
             j4["error"]?.let {
                 throw RuntimeException(it.toString())
@@ -151,7 +151,7 @@ class InfusionsoftourceProcess(override val source: Source) : SourceProcess {
                     TimeUnit.SECONDS.sleep(sleepOffset)
                 }
                 else -> {
-                    InfusionsoftourceProcess.logger.error("Problem occurred while fetching Infusionsoft from API")
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchat from API")
                 }
             }
             throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
@@ -312,18 +312,18 @@ class InfusionsoftourceProcess(override val source: Source) : SourceProcess {
 
 
     override fun close() {
-        InfusionsoftourceProcess.logger.info("Infusionsoft source closed for ${source.sourceId}")
+        FreshchatSourceProcess.logger.info("Freshchat source closed for ${source.sourceId}")
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(InfusionsoftourceProcess::class.java)
+        private val logger = LoggerFactory.getLogger(FreshchatSourceProcess::class.java)
         private val mapper = ObjectMapper()
         private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     }
 }
 
-interface InfusionsoftAPI {
+interface FreshchatAPI {
     @POST("oauth/v1/token")
     @FormUrlEncoded
     fun exchangeToken(
@@ -346,8 +346,8 @@ interface InfusionsoftAPI {
 
 
 
-private val Uri = ConfigResolver.getPropertyValue("infusionsoft.url")
-private val infusionSoftAPI = Retrofit.Builder().baseUrl("$Uri/").addConverterFactory(ScalarsConverterFactory.create()).build().create(InfusionsoftAPI::class.java)
+private val Uri = ConfigResolver.getPropertyValue("freshchat.url")
+private val freshchatAPI = Retrofit.Builder().baseUrl("$Uri/").addConverterFactory(ScalarsConverterFactory.create()).build().create(FreshchatAPI::class.java)
 
 
 private fun checkDatePass(date1: LocalDateTime, date2: LocalDateTime): Boolean {
@@ -356,8 +356,8 @@ private fun checkDatePass(date1: LocalDateTime, date2: LocalDateTime): Boolean {
 
 
 @Extension
-class InfusionsoftSourceProcessFactory : SourceProcessFactory {
-    override fun type() = "INFUSIONSOFT"
+class FreshchatSourceProcessFactory : SourceProcessFactory {
+    override fun type() = "Freshchat"
 
-    override fun instance(source: Source): SourceProcess = InfusionsoftourceProcess(source)
+    override fun instance(source: Source): SourceProcess = FreshchatSourceProcess(source)
 }
