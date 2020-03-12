@@ -311,7 +311,7 @@ private fun checkDatePass(date1: LocalDateTime, date2: LocalDateTime): Boolean {
 
 @Extension
 class FreshchatSourceProcessFactory : SourceProcessFactory {
-    override fun type() = "Freshchat"
+    override fun type() = "FRESHCHAT"
 
     override fun instance(source: Source): SourceProcess = FreshchatSourceProcess(source)
 }
