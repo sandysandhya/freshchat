@@ -70,7 +70,14 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             log.currentLastRecord = currentLastRunRecord
             val tableName = table.name.substringAfter("_")
             when (tableName) {
-
+             "Groups"-> {
+                 var reportRecords = group(accessToken, tableName)
+                 emitData(reportRecords, columns, tableName, emitter,lastRunDate, log)
+             }
+             "Channels"  -> {
+                 var reportRecords = channels(accessToken,tableName)
+                 emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
+             }
             }
             emitter.onComplete()
         } catch (e: Exception) {
@@ -89,10 +96,68 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
         logger.info("Freshchat source started for ${source.sourceId}")
         return true
     }
+    private fun group(accessToken:String,tableName: String):JsonNode {
+       var items_per_page=1
+        var page=3
+        val resp = freshchatAPI.group("Bearer $accessToken",items_per_page ,page ).execute()
+        if (resp.isSuccessful) {
+            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
+            val j4 = mapper.readTree(r4)
+            return j4
+        }else{
+            when (resp.code()) {
+                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
+                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
+                429 -> {
+                    val responseHeader = resp.headers()
+                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
+                    val sleepOffset = Instant.now().epochSecond - timeToReset
+                    TimeUnit.SECONDS.sleep(sleepOffset)
+                }
+                else -> {
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchat from API")
+                }
+            }
+            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
+        }
+    }
+
+
+    private fun  channels(accessToken:String,tableName: String):JsonNode {
+        var items_per_page=1
+        var page=3
+        val resp = freshchatAPI.channel("Bearer $accessToken",items_per_page,page).execute()
+        if (resp.isSuccessful) {
+            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
+            val j4 = mapper.readTree(r4)
+            return j4
+        }else{
+            when (resp.code()) {
+                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
+                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
+                429 -> {
+                    val responseHeader = resp.headers()
+                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
+                    val sleepOffset = Instant.now().epochSecond - timeToReset
+                    TimeUnit.SECONDS.sleep(sleepOffset)
+                }
+                else -> {
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchat from API")
+                }
+            }
+            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
+        }
+    }
 
 
 
-    private fun exchangeToken(accessToken:String,tableName: String):JsonNode {
+
+
+
+
+
+
+        private fun exchangeToken(accessToken:String,tableName: String):JsonNode {
 
         val resp = freshchatAPI.exchangeToken("grant_type","client_id","client_secret","refresh_token").execute()
         if (resp.isSuccessful) {
@@ -294,6 +359,19 @@ interface FreshchatAPI {
         @Field("client_id") clientId: String,
         @Field("client_secret") clientSecret: String,
         @Field("refresh_token") refreshToken: String
+    ): Call<String>
+    //FULL LOAD//
+    @GET("v2/groups")
+    fun group(
+            @Header("Authorization") Authorization: String,
+            @Query("items_per_page")items_per_page: Int,
+            @Query("page")page: Int
+    ): Call<String>
+    @GET("/v2/channels ")
+    fun channel(
+            @Header("Authorization") Authorization: String,
+            @Query("items_per_page")items_per_page: Int,
+            @Query("page")page: Int
     ): Call<String>
 }
 
