@@ -70,6 +70,20 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             log.currentLastRecord = currentLastRunRecord
             val tableName = table.name.substringAfter("_")
             when (tableName) {
+                "User" -> {
+                    var reportRecords =user(accessToken,tableName)
+                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
+                }
+
+                "Conversation" -> {
+                    var reportRecords = conversation(accessToken,tableName)
+                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
+                }
+                "Agent" -> {
+                    var reportRecords = agent(accessToken,tableName)
+                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
+                }
+
 
             }
             emitter.onComplete()
@@ -120,6 +134,95 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
         }
 
     }
+    private fun user(accessToken:String,tableName: String):JsonNode {
+      var user_id=""
+        val resp = freshchatAPI.user("Bearer $accessToken",user_id).execute()
+        if (resp.isSuccessful) {
+            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
+            val j4 = mapper.readTree(r4)
+            j4["error"]?.let {
+                throw RuntimeException(it.toString())
+            }
+            return  j4
+        }else{
+            when (resp.code()) {
+                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
+                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
+                429 -> {
+                    val responseHeader = resp.headers()
+                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
+                    val sleepOffset = Instant.now().epochSecond - timeToReset
+                    TimeUnit.SECONDS.sleep(sleepOffset)
+                }
+                else -> {
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchatfrom API")
+                }
+            }
+            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
+        }
+
+    }
+    private fun conversation(accessToken:String,tableName: String):JsonNode {
+        var conversation_id=""
+        val resp = freshchatAPI.conversation("Bearer $accessToken",conversation_id).execute()
+        if (resp.isSuccessful) {
+            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
+            val j4 = mapper.readTree(r4)
+            j4["error"]?.let {
+                throw RuntimeException(it.toString())
+            }
+            return  j4
+        }else{
+            when (resp.code()) {
+                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
+                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
+                429 -> {
+                    val responseHeader = resp.headers()
+                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
+                    val sleepOffset = Instant.now().epochSecond - timeToReset
+                    TimeUnit.SECONDS.sleep(sleepOffset)
+                }
+                else -> {
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchatfrom API")
+                }
+            }
+            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
+        }
+
+    }
+
+    private fun agent(accessToken:String,tableName: String):JsonNode {
+        var agent_id=""
+        val resp = freshchatAPI.agent("Bearer $accessToken",agent_id).execute()
+        if (resp.isSuccessful) {
+            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
+            val j4 = mapper.readTree(r4)
+            j4["error"]?.let {
+                throw RuntimeException(it.toString())
+            }
+            return  j4
+        }else{
+            when (resp.code()) {
+                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
+                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
+                429 -> {
+                    val responseHeader = resp.headers()
+                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
+                    val sleepOffset = Instant.now().epochSecond - timeToReset
+                    TimeUnit.SECONDS.sleep(sleepOffset)
+                }
+                else -> {
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchatfrom API")
+                }
+            }
+            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
+        }
+
+    }
+
+
+
+
 
 
 
@@ -295,7 +398,28 @@ interface FreshchatAPI {
         @Field("client_secret") clientSecret: String,
         @Field("refresh_token") refreshToken: String
     ): Call<String>
+    @GET("/users")
+    fun user(
+            @Header("Authorization") Authorization: String,
+            @Query("user_id") since: String
+    ): Call<String>
+    @GET("/conversations")
+    fun conversation(
+            @Header("Authorization") Authorization: String,
+            @Query("conversation_id") since: String
+    ): Call<String>
+
+
+    //FULL LOAD//
+    @GET("/agents")
+    fun agent(
+            @Header("Authorization") Authorization: String,
+            @Query("agent_id") since: String
+    ): Call<String>
+
+
 }
+
 
 
 
