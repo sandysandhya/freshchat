@@ -38,6 +38,7 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
     override fun refreshToken(): Pair<Boolean, SourceToken> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+    var users= mutableListOf<String>()
 
     override fun process(sourceLogs: Map<String, SourceLog>, emitter: Emitter<Message>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -45,12 +46,12 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
 
     override fun process(sourceLog: SourceLog, table: Table, emitter: Emitter<Message>,extras: Extras) {
         logger.info(
-            "Stampedio source process started for SourceId = ${source.sourceId}, UserId = ${source.userId}," +
+            "Freshchat source process started for SourceId = ${source.sourceId}, UserId = ${source.userId}," +
                     " SourceName = ${source.name}"
         )
         val currentDateTime = LocalDateTime.now()
         try {
-            var accessToken=source.settings.token.token
+            var apiToken="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpS216TTVkenRIWmprdmdSY3VrVHgxTzJ2SFlTM0U5YmVJME9XbXRNR1ZzIn0.eyJqdGkiOiJmZGJkYWQ4ZC05NzViLTQ3MjktODhiYS04ZWQ3ZWQzMDc4NDYiLCJleHAiOjE4OTk1NTgyMzIsIm5iZiI6MCwiaWF0IjoxNTg0MTk4MjMyLCJpc3MiOiJodHRwOi8vaW50ZXJuYWwtZmMtdXNlMS0wMC1rZXljbG9hay1vYXV0aC0xMzA3MzU3NDU5LnVzLWVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hdXRoL3JlYWxtcy9wcm9kdWN0aW9uIiwiYXVkIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwic3ViIjoiZjNjMjZiYTAtNjZmYi00M2ZjLWE2MTktZWY4YzE5Y2EyNTI0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiYjUyODdiOGItYWI2Zi00ZTM4LWI5ZTEtMTkyYTQ3ZmE4ZTgxIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6W10sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJhZ2VudDp1cGRhdGUgbWVzc2FnZTpjcmVhdGUgYWdlbnQ6Y3JlYXRlIGRhc2hib2FyZDpyZWFkIHJlcG9ydHM6ZXh0cmFjdDpyZWFkIHJlcG9ydHM6cmVhZCBhZ2VudDpyZWFkIGNvbnZlcnNhdGlvbjp1cGRhdGUgdXNlcjpkZWxldGUgY29udmVyc2F0aW9uOmNyZWF0ZSBvdXRib3VuZG1lc3NhZ2U6Z2V0IG91dGJvdW5kbWVzc2FnZTpzZW5kIHVzZXI6Y3JlYXRlIHJlcG9ydHM6ZmV0Y2ggdXNlcjp1cGRhdGUgdXNlcjpyZWFkIHJlcG9ydHM6ZXh0cmFjdCBjb252ZXJzYXRpb246cmVhZCIsImNsaWVudElkIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwiY2xpZW50SG9zdCI6IjE5Mi4xNjguMTI5LjE1NyIsImNsaWVudEFkZHJlc3MiOiIxOTIuMTY4LjEyOS4xNTcifQ.jwhJo5ssRyKeFcBo-FEuECmTrr_luWn39zvOy9RvcJFEBYw0cfMIqDsv3wtaKGVIwGvm3wtLdcOzvCGqvT0i-lWAzO8VyJOv0_ofGyzD5mprSy2Y2gLFBF8IcmZNPWyoAiaPz3ArBCGQ94-GtacX_f6kfaez8B9G5_Zor939tTtkgIBNrVAMkkXBiliHnI-SNgdAVFWTGlm7Dftr4-qiEZrr1QZUZgBIRQKFKOOkg1fWrpmp3cjaLewrl5bfWWfavmytl0sNpV3vFBTghwUwGlSrzUSQEC7p2Sv0u2ozlsmhMF6asiLE_lghn-Yih-0n4vGf_puU8MjjkPgraYVE8w"
             val columns = table.columns.filter { it.selected }
             val log = sourceLog
             val lastRunRecordDate = log.lastRecord
@@ -69,28 +70,34 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             }
             log.currentLastRecord = currentLastRunRecord
             val tableName = table.name.substringAfter("_")
+            setusers(apiToken)
             when (tableName) {
-             "Groups"-> {
-                 var reportRecords = group(accessToken, tableName)
-                 emitData(reportRecords, columns, tableName, emitter,lastRunDate, log)
+             "list_groups"-> {
+                 var reportRecords = groups(apiToken, tableName)
+                 for(row in reportRecords)
+                 emitData(row, columns, tableName, emitter,lastRunDate, log)
              }
-             "Channels"  -> {
-                 var reportRecords = channels(accessToken,tableName)
-                 emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
+             "list_channels"  -> {
+                 var reportRecords = channels(apiToken,tableName)
+                 for(row in reportRecords)
+                 emitData(row, columns, tableName, emitter, lastRunDate, log)
              }
-                "User" -> {
-                    var reportRecords =user(accessToken,tableName)
+                "list_agents" -> {
+                    var reportRecords = agent(apiToken,tableName)
+                    for(row in reportRecords)
+                        emitData(row, columns, tableName, emitter, lastRunDate, log)
+                }
+                "user_information" -> {
+                    var reportRecords =user(apiToken,tableName)
                     emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
                 }
 
-                "Conversation" -> {
-                    var reportRecords = conversation(accessToken,tableName)
-                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
-                }
-                "Agent" -> {
-                    var reportRecords = agent(accessToken,tableName)
-                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
-                }
+//                "Conversation" -> {
+//                    var reportRecords = conversation(apiToken,tableName)
+//                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
+//                }
+
+
 
 
             }
@@ -100,6 +107,7 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             emitter.onError(e)
         }
     }
+
 
     private val batchId = AtomicLong()
     private val timestamp = AtomicLong()
@@ -111,41 +119,36 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
         logger.info("Freshchat source started for ${source.sourceId}")
         return true
     }
-    private fun group(accessToken:String,tableName: String):JsonNode {
-       var items_per_page=1
-        var page=3
-        val resp = freshchatAPI.group("Bearer $accessToken",items_per_page ,page ).execute()
-        if (resp.isSuccessful) {
-            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
-            val j4 = mapper.readTree(r4)
-            return j4
-        }else{
-            when (resp.code()) {
-                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
-                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
-                429 -> {
-                    val responseHeader = resp.headers()
-                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
-                    val sleepOffset = Instant.now().epochSecond - timeToReset
-                    TimeUnit.SECONDS.sleep(sleepOffset)
-                }
-                else -> {
-                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchat from API")
-                }
+
+
+    private fun setusers(apiToken:String) {
+        val resp1 = freshchatAPI.getuserids("Bearer $apiToken").execute()
+        if (resp1.isSuccessful) {
+            val r4 = resp1.body() ?: throw RuntimeException("Freshchat code error")
+            val j4 = mapper.readTree(r4).get("agents")
+            j4.map { element ->
+                var x= j4.get(0)
+                users.add(x.get("id").asText())
             }
-            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
         }
+
     }
 
-
-    private fun  channels(accessToken:String,tableName: String):JsonNode {
+    private fun groups(apiToken:String,tableName: String):MutableList<JsonNode> {
+        var finaljson = mutableListOf<JsonNode>()
+        var flag=true
+        var page = 1
         var items_per_page=1
-        var page=3
-        val resp = freshchatAPI.channel("Bearer $accessToken",items_per_page,page).execute()
+        val resp = freshchatAPI.group("Bearer $apiToken" ,page,items_per_page).execute()
         if (resp.isSuccessful) {
             val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
             val j4 = mapper.readTree(r4)
-            return j4
+            finaljson.add(j4["groups"])
+            if(j4.get("links").get("next_page").get("href").isNull)
+                flag=false
+            else
+                page++
+
         }else{
             when (resp.code()) {
                 401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
@@ -162,26 +165,44 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             }
             throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
         }
+        while(flag){
+            val resp = freshchatAPI.group("Bearer $apiToken",page,items_per_page).execute()
+            if (resp.isSuccessful) {
+                val r4 = resp.body() ?: throw RuntimeException("freshchat error")
+                val j3 =mapper.readTree(r4)
+                j3["error"]?.let {
+                    throw RuntimeException(it.toString())
+                }
+                finaljson.add(j3["groups"])
+                if(j3.get("links").get("next_page").get("href").isNull)
+                flag=false
+                else
+                    page++
+
+            }
+
+        }
+        return finaljson
     }
 
-
-
-
-
-
-
-
-
-        private fun exchangeToken(accessToken:String,tableName: String):JsonNode {
-
-        val resp = freshchatAPI.exchangeToken("grant_type","client_id","client_secret","refresh_token").execute()
+    private fun agent(apiToken:String,tableName: String):MutableList<JsonNode> {
+        var finaljson = mutableListOf<JsonNode>()
+        var flag=true
+        var page = 1
+        var items_per_page=1
+        val resp = freshchatAPI.agent("Bearer $apiToken",page,items_per_page).execute()
         if (resp.isSuccessful) {
             val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
             val j4 = mapper.readTree(r4)
             j4["error"]?.let {
                 throw RuntimeException(it.toString())
             }
-            return  j4
+            finaljson.add(j4["agents"])
+            if(j4.get("links").get("next_page").get("href").isNull)
+                flag=false
+            else
+                page++
+
         }else{
             when (resp.code()) {
                 401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
@@ -193,16 +214,89 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                     TimeUnit.SECONDS.sleep(sleepOffset)
                 }
                 else -> {
-                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Hubspot from API")
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchatfrom API")
                 }
             }
             throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
         }
+        while(flag){
+            val resp = freshchatAPI.agent("Bearer $apiToken",page,items_per_page).execute()
+            if (resp.isSuccessful) {
+                val r4 = resp.body() ?: throw RuntimeException("freshchat error")
+                val j3 =mapper.readTree(r4)
+                j3["error"]?.let {
+                    throw RuntimeException(it.toString())
+                }
+                finaljson.add(j3["agents"])
+                if(j3.get("links").get("next_page").get("href").isNull)
+                    flag=false
+                else
+                    page++
+
+            }
+
+        }
+        return finaljson
 
     }
-    private fun user(accessToken:String,tableName: String):JsonNode {
-      var user_id=""
-        val resp = freshchatAPI.user("Bearer $accessToken",user_id).execute()
+
+    private fun channels(apiToken: String,tableName: String):MutableList<JsonNode> {
+        var finaljson = mutableListOf<JsonNode>()
+        var flag=true
+        var page = 1
+        var items_per_page=1
+        val resp = freshchatAPI.channel("Bearer $apiToken",items_per_page,page).execute()
+        if (resp.isSuccessful) {
+            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
+            val j4 = mapper.readTree(r4)
+            j4["error"]?.let {
+                throw RuntimeException(it.toString())
+            }
+            finaljson.add(j4["channels"])
+            if(j4.get("links").get("next_page").get("href").isNull)
+                flag=false
+            else
+                page++
+        }else{
+            when (resp.code()) {
+                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
+                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
+                429 -> {
+                    val responseHeader = resp.headers()
+                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
+                    val sleepOffset = Instant.now().epochSecond - timeToReset
+                    TimeUnit.SECONDS.sleep(sleepOffset)
+                }
+                else -> {
+                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchat from API")
+                }
+            }
+            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
+        }
+        while(flag){
+            val resp = freshchatAPI.channel("Bearer $apiToken",page,items_per_page).execute()
+            if (resp.isSuccessful) {
+                val r4 = resp.body() ?: throw RuntimeException("freshchat error")
+                val j3 =mapper.readTree(r4)
+                j3["error"]?.let {
+                    throw RuntimeException(it.toString())
+                }
+                finaljson.add(j3["channels"])
+                if(j3.get("links").get("next_page").get("href").isNull)
+                    flag=false
+                else
+                    page++
+
+            }
+
+        }
+        return finaljson
+
+    }
+
+    private fun user(apiToken:String,tableName: String):JsonNode {
+        var userid = users.get(0)
+        val resp = freshchatAPI.user("Bearer $apiToken",userid).execute()
         if (resp.isSuccessful) {
             val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
             val j4 = mapper.readTree(r4)
@@ -228,72 +322,35 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
         }
 
     }
-    private fun conversation(accessToken:String,tableName: String):JsonNode {
-        var conversation_id=""
-        val resp = freshchatAPI.conversation("Bearer $accessToken",conversation_id).execute()
-        if (resp.isSuccessful) {
-            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
-            val j4 = mapper.readTree(r4)
-            j4["error"]?.let {
-                throw RuntimeException(it.toString())
-            }
-            return  j4
-        }else{
-            when (resp.code()) {
-                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
-                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
-                429 -> {
-                    val responseHeader = resp.headers()
-                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
-                    val sleepOffset = Instant.now().epochSecond - timeToReset
-                    TimeUnit.SECONDS.sleep(sleepOffset)
-                }
-                else -> {
-                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchatfrom API")
-                }
-            }
-            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
-        }
 
-    }
-
-    private fun agent(accessToken:String,tableName: String):JsonNode {
-        var agent_id=""
-        val resp = freshchatAPI.agent("Bearer $accessToken",agent_id).execute()
-        if (resp.isSuccessful) {
-            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
-            val j4 = mapper.readTree(r4)
-            j4["error"]?.let {
-                throw RuntimeException(it.toString())
-            }
-            return  j4
-        }else{
-            when (resp.code()) {
-                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
-                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
-                429 -> {
-                    val responseHeader = resp.headers()
-                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
-                    val sleepOffset = Instant.now().epochSecond - timeToReset
-                    TimeUnit.SECONDS.sleep(sleepOffset)
-                }
-                else -> {
-                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchatfrom API")
-                }
-            }
-            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
-        }
-
-    }
-
-
-
-
-
-
-
-
-
+//    private fun conversation(apiToken:String,tableName: String):JsonNode {
+//        var conversation_id=""
+//        val resp = freshchatAPI.conversation("Bearer $apiToken",conversation_id).execute()
+//        if (resp.isSuccessful) {
+//            val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
+//            val j4 = mapper.readTree(r4)
+//            j4["error"]?.let {
+//                throw RuntimeException(it.toString())
+//            }
+//            return  j4
+//        }else{
+//            when (resp.code()) {
+//                401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
+//                402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
+//                429 -> {
+//                    val responseHeader = resp.headers()
+//                    val timeToReset = responseHeader["X-RateLimit-Reset"]?.toLong() ?: 0L
+//                    val sleepOffset = Instant.now().epochSecond - timeToReset
+//                    TimeUnit.SECONDS.sleep(sleepOffset)
+//                }
+//                else -> {
+//                    FreshchatSourceProcess.logger.error("Problem occurred while fetching Freshchatfrom API")
+//                }
+//            }
+//            throw  RuntimeException("Error at $tableName Table" + resp.errorBody()?.string())
+//        }
+//
+//    }
 
 
     private fun emitData(data: JsonNode, fieldList: List<Column>, tableName: String, emitter: Emitter<Message>, lastRunDate: Long, log: SourceLog?) {
@@ -302,25 +359,6 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
         var maxCreatedDate = createdDate
 
         data.map { element ->
-            val builder = getMessageBuilder(fieldList, tableName, element)
-            builder.withBatchId(batchId.incrementAndGet())
-            builder.build(fieldList)
-
-        }.forEach {
-            println("$it")
-            emitter.onNext(it)
-        }
-        log?.currentLastRecord = maxCreatedDate.atTime(0, 0, 0).toInstant(ZoneOffset.UTC).toEpochMilli()
-    }
-
-    private fun EmitData(data: JsonNode, fieldList: List<Column>, tableName: String, emitter: Emitter<Message>, lastRunDate: Long, log: SourceLog?) {
-        val lastRunDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(lastRunDate), ZoneId.systemDefault()).toLocalDate()
-        var createdDate = lastRunDate
-        var maxCreatedDate = createdDate
-
-        data.map { element ->
-
-            //            var x = element.get("review")
             val builder = getMessageBuilder(fieldList, tableName, element)
             builder.withBatchId(batchId.incrementAndGet())
             builder.build(fieldList)
@@ -456,20 +494,12 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
 }
 
 interface FreshchatAPI {
-    @POST("oauth/v1/token")
-    @FormUrlEncoded
-    fun exchangeToken(
-        @Field("grant_type") grantType: String = "refresh_token",
-        @Field("client_id") clientId: String,
-        @Field("client_secret") clientSecret: String,
-        @Field("refresh_token") refreshToken: String
-    ): Call<String>
     //FULL LOAD//
     @GET("v2/groups")
     fun group(
             @Header("Authorization") Authorization: String,
-            @Query("items_per_page")items_per_page: Int,
-            @Query("page")page: Int
+            @Query("page")page:Int,
+            @Query("items_per_page")items_per_page: Int
     ): Call<String>
     @GET("/v2/channels ")
     fun channel(
@@ -477,30 +507,32 @@ interface FreshchatAPI {
             @Query("items_per_page")items_per_page: Int,
             @Query("page")page: Int
     ): Call<String>
-    @GET("/users")
+    @GET("v2/users")
     fun user(
             @Header("Authorization") Authorization: String,
             @Query("user_id") since: String
     ): Call<String>
-    @GET("/conversations")
+    @GET("v2/conversations")
     fun conversation(
             @Header("Authorization") Authorization: String,
             @Query("conversation_id") since: String
     ): Call<String>
 
-
     //FULL LOAD//
-    @GET("/agents")
+    @GET("v2/agents")
     fun agent(
             @Header("Authorization") Authorization: String,
-            @Query("agent_id") since: String
+            @Query("page")page:Int,
+            @Query("items_per_page")items_per_page: Int
+    ): Call<String>
+    @GET("v2/agents")
+    fun getuserids(
+        @Header("Authorization") Authorization: String
+
     ): Call<String>
 
 
 }
-
-
-
 
 
 private val Uri = ConfigResolver.getPropertyValue("freshchat.url")

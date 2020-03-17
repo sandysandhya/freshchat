@@ -7,8 +7,88 @@
   "accounts": [],
   "tables": [
     {
-      "name": "Channels",
-      "name": "User",
+      "name": "list_agents",
+      "columns": [
+        {
+          "name": "id",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "fields": [],
+          "primary": false,
+          "lastRecord": false,
+          "selected": true,
+          "modificationType": "NONE",
+          "exclusionFields": []
+        },
+        {
+          "name": "first_name",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "fields": [],
+          "primary": false,
+          "lastRecord": false,
+          "selected": true,
+          "modificationType": "NONE",
+          "exclusionFields": []
+        },
+        {
+          "name": "last_name",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "fields": [],
+          "primary": false,
+          "lastRecord": false,
+          "selected": true,
+          "modificationType": "NONE",
+          "exclusionFields": []
+        },
+        {
+          "name": "email",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "fields": [],
+          "primary": false,
+          "lastRecord": false,
+          "selected": true,
+          "modificationType": "NONE",
+          "exclusionFields": []
+        },
+        {
+          "name": "avatar",
+          "type": "RECORD",
+          "mode": "REPEATED",
+          "fields": [],
+          "primary": false,
+          "lastRecord": false,
+          "selected": true,
+          "modificationType": "NONE",
+          "exclusionFields": []
+        },
+        {
+          "name": "social_profiles",
+          "type": "STRING",
+          "mode": "NULLABLE",
+          "fields": [],
+          "primary": false,
+          "lastRecord": false,
+          "selected": true,
+          "modificationType": "NONE",
+          "exclusionFields": []
+        }
+      ],
+      "storage": {
+        "basePath": "",
+        "blobPath": ""
+      },
+      "schema": "",
+      "selected": true,
+      "pivotColumn": null,
+      "modificationType": "NONE",
+      "isFullLoadSupported": true,
+      "database": ""
+    },
+    {
+      "name": "list_channels",
       "columns": [
         {
           "name": "id",
@@ -24,8 +104,20 @@
         {
           "name": "icon",
           "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [],
+          "mode": "REPEATED",
+          "fields": [
+            {
+              "name": "url",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "fields": [],
+              "primary": false,
+              "lastRecord": false,
+              "selected": true,
+              "modificationType": "NONE",
+              "exclusionFields": []
+            }
+          ],
           "primary": false,
           "lastRecord": false,
           "selected": true,
@@ -90,17 +182,17 @@
         {
           "name": "welcome_message",
           "type": "RECORD",
-          "mode": "NULLABLE",
+          "mode": "REPEATED",
           "fields": [
             {
               "name": "message_parts",
               "type": "RECORD",
-              "mode": "NULLABLE",
+              "mode": "REPEATED",
               "fields": [
                 {
                   "name": "text",
                   "type": "RECORD",
-                  "mode": "NULLABLE",
+                  "mode": "REPEATED",
                   "fields": [
                     {
                       "name": "content",
@@ -137,6 +229,17 @@
               "selected": true,
               "modificationType": "NONE",
               "exclusionFields": []
+            },
+            {
+              "name": "message_source",
+              "type": "STRING",
+              "mode": "NULLABLE",
+              "fields": [],
+              "primary": false,
+              "lastRecord": false,
+              "selected": true,
+              "modificationType": "NONE",
+              "exclusionFields": []
             }
           ],
           "primary": false,
@@ -153,10 +256,12 @@
       "schema": "",
       "selected": true,
       "pivotColumn": null,
-      "modificationType": "NONE"
+      "modificationType": "NONE",
+      "isFullLoadSupported": true,
+      "database": ""
     },
     {
-      "name": "Groups",
+      "name": "list_groups",
       "columns": [
         {
           "name": "id",
@@ -201,39 +306,22 @@
           "selected": true,
           "modificationType": "NONE",
           "exclusionFields": []
-          "name": "email",
-          "type": "STRING",
-          "mode": "NULLABLE",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "avatar",
-          "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [
-            {
-              "name": "url",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            }
-          ],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
+        }
+      ],
+      "storage": {
+        "basePath": "",
+        "blobPath": ""
+      },
+      "schema": "",
+      "selected": true,
+      "pivotColumn": null,
+      "modificationType": "NONE",
+      "isFullLoadSupported": true,
+      "database": ""
+    },
+    {
+      "name": "user_information",
+      "columns": [
         {
           "name": "created_time",
           "type": "STRING",
@@ -250,51 +338,6 @@
           "type": "STRING",
           "mode": "NULLABLE",
           "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "phone",
-          "type": "STRING",
-          "mode": "NULLABLE",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "properties",
-          "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [
-            {
-              "name": "name",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "value",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            }
-          ],
           "primary": false,
           "lastRecord": false,
           "selected": true,
@@ -332,486 +375,10 @@
       "selected": true,
       "pivotColumn": null,
       "modificationType": "NONE"
-    },
-    {
-      "name": "Conversation",
-      "columns": [
-        {
-          "name": "conversation_id",
-          "type": "STRING",
-          "mode": "NULLABLE",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "app_id",
-          "type": "STRING",
-          "mode": "NULLABLE",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "channel_id",
-          "type": "STRING",
-          "mode": "NULLABLE",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "messages",
-          "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [
-            {
-              "name": "app_id",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "actor_type",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "actor_id",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "channel_id",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "message_type",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "message_parts",
-              "type": "RECORD",
-              "mode": "NULLABLE",
-              "fields": [
-                {
-                  "name": "text",
-                  "type": "RECORD",
-                  "mode": "NULLABLE",
-                  "fields": [
-                    {
-                      "name": "content",
-                      "type": "STRING",
-                      "mode": "NULLABLE",
-                      "fields": [],
-                      "primary": false,
-                      "lastRecord": false,
-                      "selected": true,
-                      "modificationType": "NONE",
-                      "exclusionFields": []
-                    }
-                  ],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                }
-              ],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            }
-          ],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "status",
-          "type": "STRING",
-          "mode": "NULLABLE",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "users",
-          "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [
-            {
-              "name": "id",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            }
-          ],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        }
-      ],
-      "storage": {
-        "basePath": "",
-        "blobPath": ""
-      },
-      "schema": "",
-      "selected": true,
-      "pivotColumn": null,
-      "modificationType": "NONE"
-    },
-    {
-      "name": "Agents",
-      "columns": [
-        {
-          "name": "agents",
-          "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [
-            {
-              "name": "id",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "first_name",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "last_name",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "email",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "avatar",
-              "type": "RECORD",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "social_profiles",
-              "type": "STRING",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            }
-          ],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "pagination",
-          "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [
-            {
-              "name": "total_items",
-              "type": "NUMERIC",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "total_pages",
-              "type": "NUMERIC",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "current_page",
-              "type": "NUMERIC",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "items_per_page",
-              "type": "NUMERIC",
-              "mode": "NULLABLE",
-              "fields": [],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            }
-          ],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "links",
-          "type": "RECORD",
-          "mode": "NULLABLE",
-          "fields": [
-            {
-              "name": "next_page",
-              "type": "RECORD",
-              "mode": "NULLABLE",
-              "fields": [
-                {
-                  "name": "href",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                },
-                {
-                  "name": "rel",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                },
-                {
-                  "name": "type",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                }
-              ],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "first_page",
-              "type": "RECORD",
-              "mode": "NULLABLE",
-              "fields": [
-                {
-                  "name": "href",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                },
-                {
-                  "name": "rel",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                },
-                {
-                  "name": "type",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                }
-              ],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            },
-            {
-              "name": "last_page",
-              "type": "RECORD",
-              "mode": "NULLABLE",
-              "fields": [
-                {
-                  "name": "href",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                },
-                {
-                  "name": "rel",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                },
-                {
-                  "name": "type",
-                  "type": "STRING",
-                  "mode": "NULLABLE",
-                  "fields": [],
-                  "primary": false,
-                  "lastRecord": false,
-                  "selected": true,
-                  "modificationType": "NONE",
-                  "exclusionFields": []
-                }
-              ],
-              "primary": false,
-              "lastRecord": false,
-              "selected": true,
-              "modificationType": "NONE",
-              "exclusionFields": []
-            }
-          ],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        }
-      ],
-      "storage": {
-        "basePath": "",
-        "blobPath": ""
-      },
-      "schema": "",
-      "selected": true,
-      "pivotColumn": null,
-      "modificationType": "NONE"
     }
   ],
   "props": {
-    "HUBSPOT.input.api_key": "744497b7-4205-4070-b2ef-567c5fe843fd"
+    "FRESHCHAT.input.api_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpS216TTVkenRIWmprdmdSY3VrVHgxTzJ2SFlTM0U5YmVJME9XbXRNR1ZzIn0.eyJqdGkiOiJmZGJkYWQ4ZC05NzViLTQ3MjktODhiYS04ZWQ3ZWQzMDc4NDYiLCJleHAiOjE4OTk1NTgyMzIsIm5iZiI6MCwiaWF0IjoxNTg0MTk4MjMyLCJpc3MiOiJodHRwOi8vaW50ZXJuYWwtZmMtdXNlMS0wMC1rZXljbG9hay1vYXV0aC0xMzA3MzU3NDU5LnVzLWVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hdXRoL3JlYWxtcy9wcm9kdWN0aW9uIiwiYXVkIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwic3ViIjoiZjNjMjZiYTAtNjZmYi00M2ZjLWE2MTktZWY4YzE5Y2EyNTI0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiYjUyODdiOGItYWI2Zi00ZTM4LWI5ZTEtMTkyYTQ3ZmE4ZTgxIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6W10sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJhZ2VudDp1cGRhdGUgbWVzc2FnZTpjcmVhdGUgYWdlbnQ6Y3JlYXRlIGRhc2hib2FyZDpyZWFkIHJlcG9ydHM6ZXh0cmFjdDpyZWFkIHJlcG9ydHM6cmVhZCBhZ2VudDpyZWFkIGNvbnZlcnNhdGlvbjp1cGRhdGUgdXNlcjpkZWxldGUgY29udmVyc2F0aW9uOmNyZWF0ZSBvdXRib3VuZG1lc3NhZ2U6Z2V0IG91dGJvdW5kbWVzc2FnZTpzZW5kIHVzZXI6Y3JlYXRlIHJlcG9ydHM6ZmV0Y2ggdXNlcjp1cGRhdGUgdXNlcjpyZWFkIHJlcG9ydHM6ZXh0cmFjdCBjb252ZXJzYXRpb246cmVhZCIsImNsaWVudElkIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwiY2xpZW50SG9zdCI6IjE5Mi4xNjguMTI5LjE1NyIsImNsaWVudEFkZHJlc3MiOiIxOTIuMTY4LjEyOS4xNTcifQ.jwhJo5ssRyKeFcBo-FEuECmTrr_luWn39zvOy9RvcJFEBYw0cfMIqDsv3wtaKGVIwGvm3wtLdcOzvCGqvT0i-lWAzO8VyJOv0_ofGyzD5mprSy2Y2gLFBF8IcmZNPWyoAiaPz3ArBCGQ94-GtacX_f6kfaez8B9G5_Zor939tTtkgIBNrVAMkkXBiliHnI-SNgdAVFWTGlm7Dftr4-qiEZrr1QZUZgBIRQKFKOOkg1fWrpmp3cjaLewrl5bfWWfavmytl0sNpV3vFBTghwUwGlSrzUSQEC7p2Sv0u2ozlsmhMF6asiLE_lghn-Yih-0n4vGf_puU8MjjkPgraYVE8w"
   },
   "version": 2,
   "config": [
