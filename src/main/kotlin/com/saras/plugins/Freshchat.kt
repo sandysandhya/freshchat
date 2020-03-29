@@ -51,7 +51,7 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
         )
         val currentDateTime = LocalDateTime.now()
         try {
-            var apiToken="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpS216TTVkenRIWmprdmdSY3VrVHgxTzJ2SFlTM0U5YmVJME9XbXRNR1ZzIn0.eyJqdGkiOiJmZGJkYWQ4ZC05NzViLTQ3MjktODhiYS04ZWQ3ZWQzMDc4NDYiLCJleHAiOjE4OTk1NTgyMzIsIm5iZiI6MCwiaWF0IjoxNTg0MTk4MjMyLCJpc3MiOiJodHRwOi8vaW50ZXJuYWwtZmMtdXNlMS0wMC1rZXljbG9hay1vYXV0aC0xMzA3MzU3NDU5LnVzLWVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hdXRoL3JlYWxtcy9wcm9kdWN0aW9uIiwiYXVkIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwic3ViIjoiZjNjMjZiYTAtNjZmYi00M2ZjLWE2MTktZWY4YzE5Y2EyNTI0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiYjUyODdiOGItYWI2Zi00ZTM4LWI5ZTEtMTkyYTQ3ZmE4ZTgxIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6W10sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJhZ2VudDp1cGRhdGUgbWVzc2FnZTpjcmVhdGUgYWdlbnQ6Y3JlYXRlIGRhc2hib2FyZDpyZWFkIHJlcG9ydHM6ZXh0cmFjdDpyZWFkIHJlcG9ydHM6cmVhZCBhZ2VudDpyZWFkIGNvbnZlcnNhdGlvbjp1cGRhdGUgdXNlcjpkZWxldGUgY29udmVyc2F0aW9uOmNyZWF0ZSBvdXRib3VuZG1lc3NhZ2U6Z2V0IG91dGJvdW5kbWVzc2FnZTpzZW5kIHVzZXI6Y3JlYXRlIHJlcG9ydHM6ZmV0Y2ggdXNlcjp1cGRhdGUgdXNlcjpyZWFkIHJlcG9ydHM6ZXh0cmFjdCBjb252ZXJzYXRpb246cmVhZCIsImNsaWVudElkIjoiODU3ODg3NjktN2I3Ni00YWY3LWI5Y2ItYjUzNzRmM2VhYTQxIiwiY2xpZW50SG9zdCI6IjE5Mi4xNjguMTI5LjE1NyIsImNsaWVudEFkZHJlc3MiOiIxOTIuMTY4LjEyOS4xNTcifQ.jwhJo5ssRyKeFcBo-FEuECmTrr_luWn39zvOy9RvcJFEBYw0cfMIqDsv3wtaKGVIwGvm3wtLdcOzvCGqvT0i-lWAzO8VyJOv0_ofGyzD5mprSy2Y2gLFBF8IcmZNPWyoAiaPz3ArBCGQ94-GtacX_f6kfaez8B9G5_Zor939tTtkgIBNrVAMkkXBiliHnI-SNgdAVFWTGlm7Dftr4-qiEZrr1QZUZgBIRQKFKOOkg1fWrpmp3cjaLewrl5bfWWfavmytl0sNpV3vFBTghwUwGlSrzUSQEC7p2Sv0u2ozlsmhMF6asiLE_lghn-Yih-0n4vGf_puU8MjjkPgraYVE8w"
+            val apiToken=source.settings.token.token
             val columns = table.columns.filter { it.selected }
             val log = sourceLog
             val lastRunRecordDate = log.lastRecord
@@ -69,7 +69,7 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                 lastHistoryDateTime
             }
             log.currentLastRecord = currentLastRunRecord
-            val tableName = table.name.substringAfter("_")
+            val tableName = table.name
             setusers(apiToken)
             when (tableName) {
              "list_groups"-> {
@@ -87,9 +87,9 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                     for(row in reportRecords)
                         emitData(row, columns, tableName, emitter, lastRunDate, log)
                 }
-                "user_information" -> {
+                "list_users" -> {
                     var reportRecords =user(apiToken,tableName)
-                    emitData(reportRecords, columns, tableName, emitter, lastRunDate, log)
+                    Emitdata(reportRecords, columns, tableName, emitter, lastRunDate, log)
                 }
 
 //                "Conversation" -> {
@@ -144,11 +144,10 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             val r4 = resp.body() ?: throw RuntimeException("freshchat code error")
             val j4 = mapper.readTree(r4)
             finaljson.add(j4["groups"])
-            if(j4.get("links").get("next_page").get("href").isNull)
-                flag=false
-            else
+            if(j4.get("links").has("next_page"))
                 page++
-
+            else
+                flag=false
         }else{
             when (resp.code()) {
                 401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
@@ -174,11 +173,10 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                     throw RuntimeException(it.toString())
                 }
                 finaljson.add(j3["groups"])
-                if(j3.get("links").get("next_page").get("href").isNull)
-                flag=false
-                else
+                if(j3.get("links").has("next_page"))
                     page++
-
+                else
+                    flag=false
             }
 
         }
@@ -198,12 +196,14 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                 throw RuntimeException(it.toString())
             }
             finaljson.add(j4["agents"])
-            if(j4.get("links").get("next_page").get("href").isNull)
-                flag=false
-            else
+            if(j4.get("links").has("next_page"))
                 page++
+            else
+                flag=false
 
-        }else{
+
+        }
+        else{
             when (resp.code()) {
                 401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
                 402 -> throw RuntimeException("Payment Required. " + resp.errorBody()?.string())
@@ -228,10 +228,11 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                     throw RuntimeException(it.toString())
                 }
                 finaljson.add(j3["agents"])
-                if(j3.get("links").get("next_page").get("href").isNull)
-                    flag=false
-                else
+                print("\n page=$page\n")
+                if(j3.get("links").has("next_page"))
                     page++
+                else
+                    flag=false
 
             }
 
@@ -253,10 +254,10 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                 throw RuntimeException(it.toString())
             }
             finaljson.add(j4["channels"])
-            if(j4.get("links").get("next_page").get("href").isNull)
-                flag=false
-            else
+            if(j4.get("links").has("next_page"))
                 page++
+            else
+                flag=false
         }else{
             when (resp.code()) {
                 401 -> throw RuntimeException("Authentication Failed. " + resp.errorBody()?.string())
@@ -282,10 +283,10 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                     throw RuntimeException(it.toString())
                 }
                 finaljson.add(j3["channels"])
-                if(j3.get("links").get("next_page").get("href").isNull)
-                    flag=false
-                else
+                if(j3.get("links").has("next_page"))
                     page++
+                else
+                    flag=false
 
             }
 
@@ -360,6 +361,23 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
 
         data.map { element ->
             val builder = getMessageBuilder(fieldList, tableName, element)
+            builder.withBatchId(batchId.incrementAndGet())
+            builder.build(fieldList)
+
+        }.forEach {
+            println("$it")
+            emitter.onNext(it)
+        }
+        log?.currentLastRecord = maxCreatedDate.atTime(0, 0, 0).toInstant(ZoneOffset.UTC).toEpochMilli()
+    }
+
+    private fun Emitdata(data: JsonNode, fieldList: List<Column>, tableName: String, emitter: Emitter<Message>, lastRunDate: Long, log: SourceLog?) {
+        val lastRunDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(lastRunDate), ZoneId.systemDefault()).toLocalDate()
+        var createdDate = lastRunDate
+        var maxCreatedDate = createdDate
+
+        data.map { element ->
+            val builder = getMessageBuilder(fieldList, tableName, data)
             builder.withBatchId(batchId.incrementAndGet())
             builder.build(fieldList)
 
@@ -507,10 +525,10 @@ interface FreshchatAPI {
             @Query("items_per_page")items_per_page: Int,
             @Query("page")page: Int
     ): Call<String>
-    @GET("v2/users")
+    @GET("v2/users/{user_id}")
     fun user(
             @Header("Authorization") Authorization: String,
-            @Query("user_id") since: String
+            @Path("user_id")userid: String
     ): Call<String>
     @GET("v2/conversations")
     fun conversation(
