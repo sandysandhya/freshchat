@@ -1,0 +1,85 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+    id 'idea'
+    id 'eclipse'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id "org.jetbrains.kotlin.kapt" version "1.3.41"
+}
+
+ext.pluginsDir = 'build/plugins'
+group 'com.saras.plugin'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release'
+    }
+    maven {
+        url "https://repository.sarasanalytics.com/artifactory/SarasRepo"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ['build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main']
+        }
+    }
+}
+
+dependencies {
+    compileOnly "com.saras.pipelines:common:+"
+
+    compile("com.squareup.retrofit2:retrofit:2.6.0") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    compile( "com.squareup.retrofit2:converter-scalars:2.6.0") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+
+    testCompile "com.saras.pipelines:mock-impl:+"
+    /*testCompile "org.jetbrains.kotlin:kotlin-test"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit5"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.4.2"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.2"*/
+
+    kapt group: 'org.pf4j', name: 'pf4j', version: "3.0.1"
+}
+
+task('assemblePlugin', type: Copy) {
+    from shadowJar
+    into pluginsDir
+}
+
+task("cleanPlugins", type: Delete) {
+    delete {
+        pluginsDir
+    }
+}
+
+kapt {
+    includeCompileClasspath = false
+}
+
+task ensureDirectories {
+    doLast {
+        mkdir pluginsDir
+    }
+}
+
+clean.dependsOn cleanPlugins
+build.dependsOn assemblePlugin
+test.dependsOn ensureDirectories
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
