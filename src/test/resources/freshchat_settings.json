@@ -54,17 +54,6 @@
           "exclusionFields": []
         },
         {
-          "name": "avatar",
-          "type": "RECORD",
-          "mode": "REPEATED",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
           "name": "social_profiles",
           "type": "STRING",
           "mode": "NULLABLE",
@@ -367,17 +356,6 @@
           "name": "email",
           "type": "STRING",
           "mode": "NULLABLE",
-          "fields": [],
-          "primary": false,
-          "lastRecord": false,
-          "selected": true,
-          "modificationType": "NONE",
-          "exclusionFields": []
-        },
-        {
-          "name": "avatar",
-          "type": "RECORD",
-          "mode": "REPEATED",
           "fields": [],
           "primary": false,
           "lastRecord": false,

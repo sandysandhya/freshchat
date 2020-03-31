@@ -201,7 +201,6 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             else
                 flag=false
 
-
         }
         else{
             when (resp.code()) {
@@ -389,15 +388,13 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
     }
 
     private fun getMessageBuilder(fieldList: List<Column>, tableName: String, element: JsonNode): Message.Builder {
+
         val builder = Message.newBuilder()
         builder.withCreated(Instant.now().toEpochMilli())
         builder.withTable(tableName)
         builder.withUserId(userId())
-//        builder.withBatchId(batchId.incrementAndGet())
-        val mappedList = fieldMapper(element)
         for (field in fieldList) {
             val value = element[field.name]
-
             value?.let { v ->
                 when (field.type) {
                     ColumnType.STRING -> {
@@ -406,27 +403,34 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
                         else
                             builder.withField(field.name, v.asText())
                     }
-                    ColumnType.FLOAT -> builder.withField(field.name, v.asDouble())
                     ColumnType.INTEGER -> builder.withField(field.name, v.asInt())
                     ColumnType.NUMERIC -> builder.withField(field.name, v.asDouble())
                     ColumnType.BOOLEAN -> builder.withField(field.name, v.asBoolean())
+                    ColumnType.DATETIME -> builder.withField(field.name, v.asText())
+                    ColumnType.DATE -> builder.withField(field.name, v.asText())
                     ColumnType.RECORD -> {
                         when {
                             v.nodeType == JsonNodeType.ARRAY -> {
-                                val childArray = arrayListOf<JsonObject>()
+                                val childArray = arrayListOf<MutableMap<String, Any>>()
                                 v.forEach {
-                                    val childNode = JsonObject()
-                                    val cNode = jsonMessageGenerator(field.fields, it, childNode)
-                                    childArray.add(cNode)
+                                    val childNode = mutableMapOf<String, Any>()
+                                    val cMap = messageMapGenerator(field.fields, it, childNode)
+                                    childArray.add(cMap)
                                 }
                                 builder.withField(field.name, childArray)
                             }
                             v.nodeType == JsonNodeType.OBJECT -> {
-                                val childNode = JsonObject()
-                                val cNode = jsonMessageGenerator(field.fields, v, childNode)
-                                builder.withField(field.name, arrayOf(cNode))
+                                val childArray = arrayListOf<MutableMap<String, Any>>()
+                                val childMap = mutableMapOf<String, Any>()
+                                val cMap = messageMapGenerator(field.fields, v, childMap)
+                                childArray.add(cMap)
+                                builder.withField(field.name, childArray)
                             }
-                            else -> builder.withField(field.name, v.joinToString())
+                            else -> if (field.mode == Mode.REPEATED) {
+                                builder.withField(field.name, emptyList<Any>())
+                            } else {
+                                builder.withField(field.name, value.joinToString())
+                            }
                         }
                     }
 
@@ -436,6 +440,51 @@ class FreshchatSourceProcess(override val source: Source) : SourceProcess {
             }
         }
         return builder
+    }
+
+    private fun messageMapGenerator(fieldList: List<Column>, element: JsonNode, childMap: MutableMap<String, Any>): MutableMap<String, Any> {
+        for (field in fieldList) {
+            val value = element[field.name]
+            value?.let { v ->
+                when (field.type) {
+                    ColumnType.STRING -> {
+                        if (v.nodeType == JsonNodeType.ARRAY)
+                            childMap[field.name] = v.joinToString()
+                        else
+                            childMap[field.name] = v.asText()
+                    }
+                    ColumnType.INTEGER -> childMap[field.name] = v.asInt()
+                    ColumnType.NUMERIC -> childMap[field.name] = v.asDouble()
+                    ColumnType.BOOLEAN -> childMap[field.name] = v.asBoolean()
+                    ColumnType.DATETIME -> childMap[field.name] = v.asText()
+                    ColumnType.RECORD -> {
+                        when {
+                            v.nodeType == JsonNodeType.ARRAY -> {
+                                val arrayNode = arrayListOf<MutableMap<String, Any>>()
+                                v.forEach {
+                                    val childNode2 = mutableMapOf<String, Any>()
+                                    val temp = messageMapGenerator(field.fields, it, childNode2)
+                                    arrayNode.add(temp)
+                                }
+                                childMap[field.name] = arrayNode
+                            }
+                            v.nodeType == JsonNodeType.OBJECT -> {
+                                val arrayNode = arrayListOf<MutableMap<String, Any>>()
+                                val childNode2 = mutableMapOf<String, Any>()
+                                val temp = messageMapGenerator(field.fields, v, childNode2)
+                                arrayNode.add(temp)
+                                childMap[field.name] = arrayNode
+                            }
+                            else -> childMap[field.name] = v.joinToString()
+                        }
+                    }
+                    else -> {
+                    }
+                }
+
+            }
+        }
+        return childMap
     }
 
     private fun jsonMessageGenerator(fieldList: List<Column>, element: JsonNode, childNode: JsonObject): JsonObject {
